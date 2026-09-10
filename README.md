@@ -2,6 +2,10 @@
 
 Lenis smooth scrolling driven from the same `requestAnimationFrame` loop as Three.js and GSAP, so scroll position, tween state, and the rendered frame are always computed from the same value.
 
+![The horizontal rail section pinned mid-scroll, panels sliding left over a WebGL background tinted by scroll progress](docs/preview.png)
+
+The demo's rail section, pinned at roughly half its scroll range. The background is a WebGL plane whose `uProgress` uniform is written during the same frame that positions the track.
+
 ## The problem
 
 The usual Lenis setup gives it its own RAF:
