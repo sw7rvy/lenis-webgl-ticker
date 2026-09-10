@@ -1,0 +1,135 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0b0b0c;
+  color: #f2f2f0;
+  font-family: system-ui, sans-serif;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+[data-scroll-wrapper] {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+[data-scroll-content] {
+  min-height: 100%;
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 2px;
+  background: #ffffff1a;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  background: #f2f2f0;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+section {
+  position: relative;
+}
+
+.hero {
+  display: grid;
+  place-items: center;
+  height: 100svh;
+}
+
+.hero-inner {
+  max-width: 40ch;
+  padding: 0 6vw;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 9vw, 7rem);
+}
+
+.hero p {
+  color: #8f8f8a;
+}
+
+.rail {
+  height: 100svh;
+  overflow: hidden;
+}
+
+.rail-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+
+.panel {
+  display: grid;
+  flex: 0 0 clamp(20rem, 45vw, 34rem);
+  align-content: center;
+  gap: 0.5rem;
+  padding: 0 4vw;
+  border-left: 1px solid #ffffff14;
+}
+
+.panel-index {
+  color: #6a6a66;
+  font-variant-numeric: tabular-nums;
+}
+
+.panel h2 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.card {
+  display: grid;
+  place-items: center;
+  height: 100svh;
+  border-top: 1px solid #ffffff14;
+  background: #0b0b0c;
+  will-change: transform, filter;
+}
+
+.card h2 {
+  font-size: clamp(2rem, 6vw, 4.5rem);
+}
+
+.outro {
+  display: grid;
+  place-items: center;
+  height: 60dvh;
+  color: #6a6a66;
+}
+
+.scene {
+  position: fixed !important;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hero,
+.rail,
+.outro {
+  background: transparent;
+}
