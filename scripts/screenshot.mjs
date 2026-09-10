@@ -1,34 +1,12 @@
-import { existsSync } from 'node:fs'
 import { mkdir } from 'node:fs/promises'
 import { dirname } from 'node:path'
-import { chromium } from 'playwright-core'
+import { chromium } from 'playwright'
 
 const URL = process.env.SCREENSHOT_URL ?? 'http://localhost:3210'
 const OUT = process.env.SCREENSHOT_OUT ?? 'docs/preview.png'
 const SCROLL = Number(process.env.SCREENSHOT_SCROLL ?? 1800)
 const WIDTH = Number(process.env.SCREENSHOT_WIDTH ?? 1440)
 const HEIGHT = Number(process.env.SCREENSHOT_HEIGHT ?? 900)
-
-const CANDIDATES = [
-  process.env.BROWSER_PATH,
-  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-  'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-  'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-  '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
-  '/usr/bin/google-chrome',
-  '/usr/bin/chromium',
-  '/usr/bin/microsoft-edge',
-].filter(Boolean)
-
-const executablePath = CANDIDATES.find((p) => existsSync(p))
-
-if (!executablePath) {
-  console.error(
-    'No Chromium-based browser found. Set BROWSER_PATH to a Chrome or Edge binary.'
-  )
-  process.exit(1)
-}
 
 const reachable = await fetch(URL)
   .then((r) => r.ok)
@@ -41,9 +19,10 @@ if (!reachable) {
 
 await mkdir(dirname(OUT), { recursive: true })
 
+// SwiftShader renders WebGL in software, so the shader background appears on a
+// CI runner with no GPU and the output does not vary with the host's driver.
 const browser = await chromium.launch({
-  executablePath,
-  args: ['--use-gl=angle', '--enable-gpu', '--ignore-gpu-blocklist'],
+  args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
 })
 
 const page = await browser.newPage({

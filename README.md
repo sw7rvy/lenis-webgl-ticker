@@ -61,13 +61,19 @@ npm run dev
 
 Then open `http://localhost:3210`.
 
-To regenerate the screenshot above, with the dev server running:
+To regenerate the screenshot above, install the browser once:
+
+```bash
+npx playwright install chromium
+```
+
+then run it with the dev server up:
 
 ```bash
 npm run screenshot
 ```
 
-It drives a Chromium-based browser through `playwright-core`, which ships no browser of its own — the script looks for an installed Chrome or Edge, so set `BROWSER_PATH` if yours lives somewhere unusual. `SCREENSHOT_URL`, `SCREENSHOT_OUT`, `SCREENSHOT_SCROLL`, `SCREENSHOT_WIDTH`, and `SCREENSHOT_HEIGHT` override the rest.
+It runs headless against Playwright's bundled Chromium and rasterizes WebGL through SwiftShader, so the shader background renders on a CI runner with no GPU and doesn't vary with the host's graphics driver. `SCREENSHOT_URL`, `SCREENSHOT_OUT`, `SCREENSHOT_SCROLL`, `SCREENSHOT_WIDTH`, and `SCREENSHOT_HEIGHT` override the defaults.
 
 ## Configuration
 

@@ -1,0 +1,60 @@
+name: Screenshot
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: screenshot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - run: npm run build
+
+      # next start, not next dev: no HMR or dev overlay, and it exercises the
+      # production bundle the screenshot is meant to represent.
+      - name: Start server
+        run: |
+          nohup npm start > server.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -sf -o /dev/null http://localhost:3210; then
+              echo "server ready after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "server did not respond on port 3210"
+          cat server.log
+          exit 1
+
+      - name: Capture screenshot
+        run: npm run screenshot
+
+      # The capture is a build artifact, not a commit: PNG bytes are not
+      # reproducible run to run, so committing it would churn the history.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview
+          path: docs/preview.png
+          if-no-files-found: error
