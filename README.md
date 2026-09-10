@@ -1,5 +1,7 @@
 # lenis-webgl-ticker
 
+[![Screenshot](https://github.com/sw7rvy/lenis-webgl-ticker/actions/workflows/screenshot.yml/badge.svg)](https://github.com/sw7rvy/lenis-webgl-ticker/actions/workflows/screenshot.yml)
+
 Lenis smooth scrolling driven from the same `requestAnimationFrame` loop as Three.js and GSAP, so scroll position, tween state, and the rendered frame are always computed from the same value.
 
 ![The horizontal rail section pinned mid-scroll, panels sliding left over a WebGL background tinted by scroll progress](docs/preview.png)
